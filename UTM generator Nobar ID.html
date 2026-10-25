@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>UTM generator Nobar ID</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F1F3F7;--surface:#FFFFFF;--ink:#141A24;--muted:#5B6678;--line:#D5DAE3;
+  --accent:#2747D9;--on-accent:#FFFFFF;--s:#2747D9;--m:#12805A;--c:#B5540B;--warn:#8A4B00;--warn-bg:#FFF3DF;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E131B;--surface:#161D28;--ink:#E7ECF4;--muted:#93A0B5;--line:#283244;
+    --accent:#7F9CFF;--on-accent:#0E131B;--s:#8CA5FF;--m:#4FD1A0;--c:#F2A35E;--warn:#F2C078;--warn-bg:#2B2213;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E131B;--surface:#161D28;--ink:#E7ECF4;--muted:#93A0B5;--line:#283244;
+  --accent:#7F9CFF;--on-accent:#0E131B;--s:#8CA5FF;--m:#4FD1A0;--c:#F2A35E;--warn:#F2C078;--warn-bg:#2B2213;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Schibsted Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:640px;margin:0 auto;padding:32px 20px 56px}
+h1{font-size:28px;line-height:1.15;margin:0 0 8px;letter-spacing:-.01em}
+.sub{margin:0 0 28px;color:var(--muted);max-width:52ch}
+.field{margin-bottom:18px}
+label,.lbl{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+input[type=text]{width:100%;height:44px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);font:inherit}
+input[type=text]:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:520px){.row{grid-template-columns:1fr}}
+.chips{display:flex;gap:8px;margin-bottom:8px}
+.chip{height:34px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:14px;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.hint{font-size:13px;color:var(--muted);margin:6px 0 0}
+.card{margin-top:30px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px}
+.card h2{font-size:16px;margin:0 0 12px}
+#out{font:500 14px/1.75 "IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;word-break:break-all;margin:0 0 16px}
+#out .base,#out .rest{color:var(--muted)}#out .sep{color:var(--ink);font-weight:700}
+#out .s{color:var(--s)}#out .m{color:var(--m)}#out .c{color:var(--c)}
+#out.empty{font-family:inherit;color:var(--muted);font-weight:400}
+button.copy{width:100%;height:46px;border:0;border-radius:8px;background:var(--accent);color:var(--on-accent);font:600 16px "Schibsted Grotesk",system-ui,sans-serif;cursor:pointer}
+button.copy:disabled{opacity:.4;cursor:not-allowed}
+dl{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:20px 0 0;padding-top:16px;border-top:1px solid var(--line);font-size:14px}
+dt{color:var(--muted)}dd{margin:0;font:500 14px "IBM Plex Mono",ui-monospace,monospace}
+dd .s{color:var(--s)}dd .m{color:var(--m)}dd .c{color:var(--c)}
+.note{margin:14px 0 0;padding:10px 12px;border-radius:8px;background:var(--warn-bg);color:var(--warn);font-size:13px}
+.foot{margin:16px 0 0;font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+  <h1>UTM generator</h1>
+  <p class="sub">Tempel link tujuan, pilih jenis konten, lalu salin hasilnya. Di GA4 link ini terbaca sebagai youtube / live atau youtube / video.</p>
+
+  <div class="field">
+    <label for="url">Link tujuan</label>
+    <input type="text" id="url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="https://nobarid1.com/livestream/…">
+  </div>
+
+  <div class="row">
+    <div class="field">
+      <label for="src">Sumber</label>
+      <input type="text" id="src" value="youtube" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="field">
+      <span class="lbl">Jenis konten (medium)</span>
+      <div class="chips" id="chips">
+        <button type="button" class="chip" data-v="live">live</button>
+        <button type="button" class="chip" data-v="video">video</button>
+      </div>
+      <input type="text" id="med" value="live" aria-label="Medium" autocomplete="off" spellcheck="false">
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="camp">Nama campaign</label>
+    <input type="text" id="camp" autocomplete="off" spellcheck="false" placeholder="Aston Villa vs Man City">
+    <p class="hint">Satu nama per match. Huruf besar dan spasi dirapikan otomatis.</p>
+  </div>
+
+  <section class="card" aria-live="polite">
+    <h2>Link hasil</h2>
+    <p id="out" class="empty">Tempel link tujuan dan isi nama campaign untuk mulai.</p>
+    <button type="button" class="copy" id="copy" disabled>Salin link</button>
+    <dl id="ga" hidden>
+      <dt>Sumber/media sesi</dt><dd><span class="s" id="g-s"></span> / <span class="m" id="g-m"></span></dd>
+      <dt>Kampanye sesi</dt><dd><span class="c" id="g-c"></span></dd>
+    </dl>
+    <div id="notes"></div>
+    <p class="foot">Sebelum dipasang, buka link di jendela incognito dan cek Ringkasan realtime di GA4.</p>
+  </section>
+</main>
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var cur="";
+  function slug(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"")}
+  function span(t,c){var e=document.createElement("span");e.className=c;e.textContent=t;return e}
+  function note(t){var p=document.createElement("p");p.className="note";p.textContent=t;$("notes").appendChild(p)}
+  function empty(msg){cur="";var o=$("out");o.className="empty";o.textContent=msg;$("copy").disabled=true;$("ga").hidden=true}
+
+  function build(){
+    $("notes").replaceChildren();
+    var typedMed=$("med").value.trim();
+    document.querySelectorAll(".chip").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.v===slug(typedMed)))});
+    var raw=$("url").value.trim();
+    var typed={s:$("src").value.trim(),m:typedMed,c:$("camp").value.trim()};
+    var src=slug(typed.s),med=slug(typed.m),camp=slug(typed.c);
+    if(!raw){return empty("Tempel link tujuan dan isi nama campaign untuk mulai.")}
+
+    var i=raw.search(/utm_(source|medium|campaign|term|content)=/);
+    if(i>0&&"?&".indexOf(raw.charAt(i-1))<0){
+      raw=raw.slice(0,i);
+      note("Link tujuan punya utm_ yang menempel tanpa tanda ?. Bagian itu dibuang dan dibuat ulang dengan benar.");
+    }
+    if(!/^https?:\/\//i.test(raw)){raw="https://"+raw}
+    var u;
+    try{u=new URL(raw)}catch(e){return empty("Link tujuan belum valid. Contoh: https://nobarid1.com/livestream/nama-match-AbC123")}
+    if(!src||!med||!camp){return empty("Isi "+(!src?"sumber":!med?"medium":"nama campaign")+" dulu.")}
+
+    var had=["utm_source","utm_medium","utm_campaign"].some(function(k){return u.searchParams.has(k)});
+    ["utm_source","utm_medium","utm_campaign"].forEach(function(k){u.searchParams.delete(k)});
+    if(had){note("UTM lama di link ini diganti dengan yang baru.")}
+    var rest=u.searchParams.toString();
+    var segs=[{t:u.origin+u.pathname,c:"base"}];
+    if(rest){segs.push({t:"?"+rest,c:"rest"},{t:"&",c:"sep"})}else{segs.push({t:"?",c:"sep"})}
+    segs.push({t:"utm_source="+src,c:"s"},{t:"&",c:"sep"},{t:"utm_medium="+med,c:"m"},{t:"&",c:"sep"},{t:"utm_campaign="+camp,c:"c"});
+    if(u.hash){segs.push({t:u.hash,c:"base"})}
+
+    cur=segs.map(function(x){return x.t}).join("");
+    var o=$("out");o.className="";o.replaceChildren.apply(o,segs.map(function(x){return span(x.t,x.c)}));
+    $("copy").disabled=false;
+    $("g-s").textContent=src;$("g-m").textContent=med;$("g-c").textContent=camp;$("ga").hidden=false;
+
+    [["Sumber",typed.s,src],["Medium",typed.m,med],["Campaign",typed.c,camp]].forEach(function(x){
+      if(x[1]!==x[2]){note(x[0]+" “"+x[1]+"” dirapikan jadi “"+x[2]+"”.")}
+    });
+    if(med!=="live"&&med!=="video"){note("Sheet performa membaca medium live atau video. Pakai salah satunya kalau mau angkanya ikut terhitung.")}
+  }
+
+  document.querySelectorAll(".chip").forEach(function(b){b.addEventListener("click",function(){$("med").value=b.dataset.v;build()})});
+  ["url","src","med","camp"].forEach(function(id){$(id).addEventListener("input",build)});
+
+  $("copy").addEventListener("click",function(){
+    if(!cur){return}
+    var done=function(){var b=$("copy");b.textContent="Tersalin";setTimeout(function(){b.textContent="Salin link"},1600)};
+    var fallback=function(){
+      var t=document.createElement("textarea");t.value=cur;t.style.position="fixed";t.style.opacity="0";
+      document.body.appendChild(t);t.select();
+      try{document.execCommand("copy")}catch(e){}
+      document.body.removeChild(t);done();
+    };
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(cur).then(done,fallback)}else{fallback()}
+  });
+  build();
+})();
+</script>
+</body>
+</html>
