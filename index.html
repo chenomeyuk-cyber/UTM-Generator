@@ -35,9 +35,12 @@ input[type=text]{width:100%;height:44px;padding:0 12px;border:1px solid var(--li
 input[type=text]:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media (max-width:520px){.row{grid-template-columns:1fr}}
-.chips{display:flex;gap:8px}
-.chip{flex:1;height:44px;padding:0 16px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:15px;cursor:pointer}
-.chip[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.toggle{display:flex;align-items:center;gap:12px;width:100%;height:44px;padding:0 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);font:inherit;font-size:15px;text-align:left;cursor:pointer}
+.toggle .track{position:relative;flex:none;width:40px;height:24px;border-radius:999px;background:var(--muted);transition:background .15s}
+.toggle .track::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--surface);transition:transform .15s}
+.toggle[aria-checked=true]{border-color:var(--accent);font-weight:600}
+.toggle[aria-checked=true] .track{background:var(--accent)}
+.toggle[aria-checked=true] .track::after{transform:translateX(16px);background:var(--on-accent)}
 .hint{font-size:13px;color:var(--muted);margin:6px 0 0}
 .card{margin-top:30px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px}
 .card h2{font-size:16px;margin:0 0 12px}
@@ -53,11 +56,11 @@ dd .s{color:var(--s)}dd .m{color:var(--m)}dd .c{color:var(--c)}dd .t{color:var(-
 .note{margin:14px 0 0;padding:10px 12px;border-radius:8px;background:var(--warn-bg);color:var(--warn);font-size:13px}
 .foot{margin:16px 0 0;font-size:13px;color:var(--muted)}
 </style>
-<script type='text/javascript' nonce='tqWGinWiQ+yZzEogiu9sHQ==' src='https://a649c530-6bcc-46a8-b190-8bcb97d1a19e.frame.claudeusercontent.com/vWG3ycdDkeHMQBUN8OYPIC4lEKDAhio7Y6_GKb1ykXD-veisaVtV36XXoSELXcvEAceXkXFoZ9q5i8zT2BJ887J-3qv0fgd0rW3iT0tVN-cuYCOsxZH__V5Irs6a4xrtIl-Hpap4OMWPUNBFLUz1nOxzNvn8lsMfcwzVI-eUiC-xbTjCqU-ymMIbCGGRUdo9Yce2CW8jJWWDh9cdLXyH0wZ6fao1TFsyatVlkmw0K-2tXPW_hmzr4D1XuqMEkc8esrTZPb6IDB9kQilEaihn003a3bL3kKPnTIckNrMp9NQcAFnYm0CVXyHxfJgFmQ6YAHSKJgoDFSwZRWxmNymLlFn2Wvjy1V_znngqh1SrJXtB4fpfBd9fjbJPBXqIkbqEyfc2HsAHoB9eKhAgyDxEVPeik-T7xNZJ997V1XRvBCu38SRPTDEtO80e9biGfoIQNnDFzngO3GwhOmWUG5ir7RIPk7pxiRnJq2MT1GqBhxdP0QiR-6r3AeKUdzz4-OXNXu59Bj5YcLSF-xNVXKUip5TAWdKFBwWqOd_jCloFXs-34duk8k74Ayd_PAo5syBOwx6AO-4swfNDmOTjpC3cF9bBq8-Gmk-apLrwzikdHxxfzknBznHpsqffozTXaFTU6N1TkAdYFfw5aDR0P9Oh8F63RgHi3vlhO1-neIxTpiBhkWuFkQtSJYhXcGSytjRxq_s8LqhqMHrZ38UZah8DdA'></script></head>
+<script type='text/javascript' nonce='nnPFoSJPeG9qKTUxNGEo4w==' src='https://a649c530-6bcc-46a8-b190-8bcb97d1a19e.frame.claudeusercontent.com/0x-xIU5yvwrzntdFd86AtY3GjTzjnp1ArFLXxK32bieQbw8BrMwP-9m4DHV6JN2y2xQb1cS0LvbdDtdavCHYSI-AA9HQHf9_hhvC2so38xf3c75LJwovIL4Z_q78TsvruMwG29zwqzp8SxFv_l4DsXy1b6xvbZvekEklytN4hbObvd_jQum4kl_TFU_8rDHyohkS2kWF0gEA8Emw99k432ZzOznvS42vThrjd9KKTBPnlxgTfM8Ee6ReTsqtlnExLoSA2RrgclI3N8HUJRzZdNqDC2EAW4DvgDYQyFuQiEaqSZ4kZ4fUyin1hJk6VVPSR6_pOMHvESheBpoTL-8JGN46pcl6GrwkFxxD1UhhVj3IczuOVuBjG9-AeQPacx-X-z7l9yo--aelxWjSri6GRxBep8K67fb0w22TgAaVohY98sjMxADnlk8qgpEy5r72GCRVm88jaes73qdzdj5YBAots4wX6-01C14LRNMdxRsO9UCHYYsu3EuY6wPmKQHXU9Rdlw0IF5_5a4qNimN9kG6mCsBLVhmJXdTw3fZqx1GU4bIMQVQ13-3tXw9w9ZBf3VSzxJzQF3ypWdT66926K1iVRM4LXGuUbbSyvIep8X8Jj9PVPkTFRzfnGd25OEnW05Uexw81A8eFOtI_7oQ7h0Bp-fM0eSKEVCqIC6oCjWJozv93tqbotuuSQ57eNKnBe8wYLfT6z27tHqGLoZ_Twg'></script></head>
 <body>
 <main>
   <h1>UTM generator</h1>
-  <p class="sub">Tempel link tujuan, pilih organic atau non organic, lalu salin hasilnya. Di GA4 link ini terbaca sebagai youtube / organic atau youtube / non-organic.</p>
+  <p class="sub">Tempel link tujuan, nyalakan Is paid kalau ini traffic berbayar, lalu salin hasilnya. Kalau Is paid mati, link tidak membawa utm_medium.</p>
 
   <div class="field">
     <label for="url">Link tujuan</label>
@@ -71,10 +74,7 @@ dd .s{color:var(--s)}dd .m{color:var(--m)}dd .c{color:var(--c)}dd .t{color:var(-
     </div>
     <div class="field">
       <span class="lbl" id="med-lbl">Medium</span>
-      <div class="chips" id="chips" role="group" aria-labelledby="med-lbl">
-        <button type="button" class="chip" data-v="organic" aria-pressed="true">organic</button>
-        <button type="button" class="chip" data-v="non-organic" aria-pressed="false">non organic</button>
-      </div>
+      <button type="button" class="toggle" id="paid" role="switch" aria-checked="false" aria-labelledby="med-lbl paid-t"><span class="track"></span><span id="paid-t">Is paid</span></button>
     </div>
   </div>
 
@@ -106,7 +106,7 @@ dd .s{color:var(--s)}dd .m{color:var(--m)}dd .c{color:var(--c)}dd .t{color:var(-
 <script>
 (function(){
   var $=function(id){return document.getElementById(id)};
-  var cur="",medium="organic";
+  var cur="",paid=false;
   var KEYS=["utm_source","utm_medium","utm_campaign","utm_content"];
   function slug(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"")}
   function span(t,c){var e=document.createElement("span");e.className=c;e.textContent=t;return e}
@@ -115,10 +115,10 @@ dd .s{color:var(--s)}dd .m{color:var(--m)}dd .c{color:var(--c)}dd .t{color:var(-
 
   function build(){
     $("notes").replaceChildren();
-    document.querySelectorAll(".chip").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.v===medium))});
+    $("paid").setAttribute("aria-checked",String(paid));
     var raw=$("url").value.trim();
     var typed={s:$("src").value.trim(),c:$("camp").value.trim(),t:$("cont").value.trim()};
-    var src=slug(typed.s),med=medium,camp=slug(typed.c),cont=slug(typed.t);
+    var src=slug(typed.s),med=paid?"paid":"",camp=slug(typed.c),cont=slug(typed.t);
     if(!raw){return empty("Tempel link tujuan dan isi nama campaign untuk mulai.")}
 
     var i=raw.search(/utm_(source|medium|campaign|term|content)=/);
@@ -137,14 +137,16 @@ dd .s{color:var(--s)}dd .m{color:var(--m)}dd .c{color:var(--c)}dd .t{color:var(-
     var rest=u.searchParams.toString();
     var segs=[{t:u.origin+u.pathname,c:"base"}];
     if(rest){segs.push({t:"?"+rest,c:"rest"},{t:"&",c:"sep"})}else{segs.push({t:"?",c:"sep"})}
-    segs.push({t:"utm_source="+src,c:"s"},{t:"&",c:"sep"},{t:"utm_medium="+med,c:"m"},{t:"&",c:"sep"},{t:"utm_campaign="+camp,c:"c"});
+    segs.push({t:"utm_source="+src,c:"s"});
+    if(med){segs.push({t:"&",c:"sep"},{t:"utm_medium="+med,c:"m"})}
+    segs.push({t:"&",c:"sep"},{t:"utm_campaign="+camp,c:"c"});
     if(cont){segs.push({t:"&",c:"sep"},{t:"utm_content="+cont,c:"t"})}
     if(u.hash){segs.push({t:u.hash,c:"base"})}
 
     cur=segs.map(function(x){return x.t}).join("");
     var o=$("out");o.className="";o.replaceChildren.apply(o,segs.map(function(x){return span(x.t,x.c)}));
     $("copy").disabled=false;
-    $("g-s").textContent=src;$("g-m").textContent=med;$("g-c").textContent=camp;$("g-t").textContent=cont;
+    $("g-s").textContent=src;$("g-m").textContent=med||"(not set)";$("g-c").textContent=camp;$("g-t").textContent=cont;
     $("g-t-l").hidden=$("g-t-d").hidden=!cont;
     $("ga").hidden=false;
 
@@ -153,7 +155,7 @@ dd .s{color:var(--s)}dd .m{color:var(--m)}dd .c{color:var(--c)}dd .t{color:var(-
     });
   }
 
-  document.querySelectorAll(".chip").forEach(function(b){b.addEventListener("click",function(){medium=b.dataset.v;build()})});
+  $("paid").addEventListener("click",function(){paid=!paid;build()});
   ["url","src","camp","cont"].forEach(function(id){$(id).addEventListener("input",build)});
 
   $("copy").addEventListener("click",function(){
